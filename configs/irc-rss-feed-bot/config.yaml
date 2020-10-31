@@ -1,0 +1,33 @@
+host: irc.hackint.org
+ssl_port: 6697
+nick: # nick goes here
+admin: #admin goes here
+alerts_channel: '#comicchat'
+mode: "+R"
+defaults:
+  new: some
+feeds:
+  "#freeside":
+    schedule:
+      url: https://schedule.freeside.network/halloween-special-2020/schedule/feed.xml
+      period: .008
+      shorten: false
+      message:
+        summary: true
+      style:
+        name:
+          bold: true
+          fg: purple
+          bg: white
+    twitter:
+      url: https://rss.freeside.network/twitter/1166037720189341696/freeside_irc?include_rts=0&exclude_replies=1
+      period: .008
+      shorten: false
+      message:
+        summary: false
+      style:
+        name:
+          bold: true
+          fg: blue
+          bg: black
+
