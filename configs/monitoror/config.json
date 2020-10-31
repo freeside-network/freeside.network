@@ -1,0 +1,47 @@
+{
+  "version": "2.0",
+  "columns": 4,
+  "tiles": [
+    { "type": "HTTP-FORMATTED", "label": "next movie", "columnSpan": 2, "params": { "format": "JSON", "url": "https://schedule.freeside.network/api/events/halloween-special-2020/talks/?format=json", "key": ".results.[0].title" } },
+    { "type": "HTTP-FORMATTED", "label": "next movie when?", "columnSpan": 2, "params": { "format": "JSON", "url": "https://schedule.freeside.network/api/events/halloween-special-2020/talks/?format=json", "key": ".results.[0].slot.start" } },
+  {
+  "type": "GROUP",
+  "label": "freeside.network sites",
+  "tiles": [
+    {"type": "HTTP-STATUS", "label": "freeside.network not OK", "params": { "url": "https://freeside.network" }},
+    {"type": "HTTP-STATUS", "label": "stream.freeside.network not OK", "params": { "url": "https://stream.freeside.network" }},
+    {"type": "HTTP-STATUS", "label": "meet.freeside.network not OK", "params": { "url": "https://meet.freeside.network" }},
+    {"type": "HTTP-STATUS", "label": "schedule.freeside.network not OK", "params": { "url": "https://schedule.freeside.network" }},
+    {"type": "HTTP-STATUS", "label": "grafana.freeside.network not OK", "params": { "url": "https://grafana.freeside.network" }},
+    {"type": "HTTP-STATUS", "label": "status.freeside.network not OK", "params": { "url": "https://grafana.freeside.network" }}
+  ] 
+  },
+    { "type": "HTTP-FORMATTED", "label": "freesideFM live now", "params": { "format": "JSON", "url": "https://harmful.software/api/nowplaying/freesidefm", "key": ".live.is_live" } },
+    { "type": "HTTP-FORMATTED", "label": "live DJ (empty if not live)", "params": { "format": "JSON", "url": "https://harmful.software/api/nowplaying/freesidefm", "key": ".live.streamer_name" } },
+    {"type": "PORT", "label": "streaming endpoint", "params": {"hostname": "freeside.network", "port": 1935}},
+
+    {
+      "type": "PORT",
+      "label": "jitsi",
+      "params": { "hostname": "127.0.0.1", "port": 7080 }
+    },
+    {"type": "PORT", "label": "file0 backend", "params": {"hostname": "127.0.0.1", "port": 9292}},
+    {"type": "PORT", "label": "prometheus", "params": {"hostname": "freeside.network", "port": 9090}},
+    {"type": "PORT", "label": "redis", "params": {"hostname": "127.0.0.1", "port": 6379}},
+    {"type": "PORT", "label": "postgres", "params": {"hostname": "127.0.0.1", "port": 5432}},
+    {"type": "PORT", "label": "etherpad", "params": {"hostname": "freeside.network", "port": 9001}},
+    {"type": "PORT", "label": "pretalx", "params": {"hostname": "127.0.0.1", "port": 9055}},
+    {"type": "PORT", "label": "grafana", "params": {"hostname": "freeside.network", "port": 3000}},
+    {"type": "PORT", "label": "rssbox", "params": {"hostname": "127.0.0.1", "port": 3333}},
+    {"type": "PORT", "label": "mumble", "params": {"hostname": "127.0.0.1", "port": 31337}},
+    {"type": "PORT", "label": "gitea", "params": {"hostname": "127.0.0.1", "port": 9999}},
+    {
+      "type": "HTTP-RAW",
+      "label": "file0 stars",
+      "params": {
+        "url": "https://github.com/s3krit/file0",
+        "regex": "(\\d+) users starred"
+      }
+    }
+  ]
+}
