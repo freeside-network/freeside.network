@@ -1,0 +1,20 @@
+#!/usr/bin/sh
+
+SERVER=your.rtmp.server.here      # Server stream endpoint.
+
+for f in "$@"
+do
+	ffmpeg -re -i "$f"\
+	-c:v libx264\
+	-preset veryfast\
+	-b:v 3000k\
+	-maxrate 3000k\
+	-bufsize 6000k\
+	-pix_fmt yuv420p\
+	-g 50\
+	-c:a aac\
+	-b:a 160k\
+	-ac 2\
+	-ar 44100\
+	-f flv rtmp://$SERVER
+done
