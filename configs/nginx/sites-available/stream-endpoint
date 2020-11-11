@@ -1,0 +1,87 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 ipv6only=on default_server;
+    return 301 https://$host$request_uri;
+}
+server {
+    listen       8081 ssl;
+    server_name  stream.freeside.network;
+    ssl_certificate /etc/letsencrypt/live/stream.freeside.network/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/stream.freeside.network/privkey.pem; # managed by Certbot
+
+    ssl_trusted_certificate /etc/letsencrypt/live/stream.freeside.network/fullchain.pem;
+    location /hls {
+
+            root /tmp/;
+
+            # CORS setup
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Expose-Headers' 'Content-Length';
+
+            # allow CORS preflight requests
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain charset=UTF-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
+
+            types {
+                application/dash+xml mpd;
+                application/vnd.apple.mpegurl m3u8;
+                video/mp2t ts;
+            }
+
+        }
+
+    location /live {
+
+            root /tmp/hls;
+            # CORS setup
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Expose-Headers' 'Content-Length';
+
+            # allow CORS preflight requests
+            if ($request_method = 'OPTIONS') {
+                add_header 'Access-Control-Allow-Origin' '*';
+                add_header 'Access-Control-Max-Age' 1728000;
+                add_header 'Content-Type' 'text/plain charset=UTF-8';
+                add_header 'Content-Length' 0;
+                return 204;
+            }
+
+            types {
+                types_hash_max_size 8194;
+                application/dash+xml mpd;
+                application/vnd.apple.mpegurl m3u8;
+                video/mp2t ts;
+            }
+
+        }
+}
+server {
+    return 301 https://$host$request_uri;
+
+    server_name stream.freeside.network; # managed by Certbot
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/stream.freeside.network/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/stream.freeside.network/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}server {
+    if ($host = stream.freeside.network) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80 ;
+    listen [::]:80  ;
+    server_name stream.freeside.network;
+    return 404; # managed by Certbot
+
+
+}%
